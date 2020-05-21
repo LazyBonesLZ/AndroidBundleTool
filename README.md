@@ -16,6 +16,7 @@
 * Download file `bundletool.jar` from [here](https://github.com/google/bundletool/releases), then choose tab `Setting` to set the local path of it.
 
 	![](pic/setting.png)
+	
 	***Pls note***: if it is the frist time you run this app, Mac OS will show a alert and you need to allow it, see how to deal with this case as follow:
 	
 	* English: [https://support.apple.com/en-us/HT202491](https://support.apple.com/en-us/HT202491)
