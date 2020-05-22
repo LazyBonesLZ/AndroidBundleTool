@@ -44,6 +44,6 @@ This is an application based on python 2.7, UI is implemented by Tkinter. I am n
 
 	![](pic/py2app1.png)
 
-* Uncheck the option: `Creat symlink to script and bundled files`
+* Uncheck the option: `Create symlink to script and bundled files`
 
 	![](pic/py2app2.png)
