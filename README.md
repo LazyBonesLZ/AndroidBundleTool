@@ -7,12 +7,13 @@
 * Android Studio 3.5+ (optional)
 
 	```
-	ADB is required, and Android studio can help you to download Android SDK which contains the adb file.
+	ADB is required, and Android studio can help you to download Android SDK which contains the adb file. Then the app will auto to check the adb file path. 
+	You can also download an adb file manully without Android Studio, but you should to set the adb local path in `Setting` tab manully.
 	```
 	
 
 ## How to use
-* Download the app form dirctionary [`mapApp/AndroidBundleTool_v1.1`](https://github.com/LazyBonesLZ/AndroidBundleTool/tree/master/macApp/AndroidAppBundleTool_v1.1.zip)
+* Download the app's zip file form dirctionary [`mapApp/AndroidBundleTool`](https://github.com/LazyBonesLZ/AndroidBundleTool/tree/master/macApp/AndroidAppBundleTool.zip), then unzip.
 * Download file `bundletool.jar` from [here](https://github.com/google/bundletool/releases), then choose tab `Setting` to set the local path of it.
 
 	![](pic/setting.png)

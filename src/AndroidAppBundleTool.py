@@ -57,21 +57,15 @@ def open_file(keyName,entry):
     if not keyName:
         return
 
-    # ext_list = [("Files",getFileTypeByKey(keyName)), ("All Files", "*.*")]
     if KEY_JKS == keyName or KEY_ADB_PATH == keyName:
         filepath = tkFileDialog.askopenfilename()
     else:
         filepath = tkFileDialog.askopenfilename(
             filetypes = [("Files",getFileTypeByKey(keyName)), ("All Files", "*.*")]
         )
-
    
     if not filepath:
         return 
-
-    # with open(filepath, "r") as input_file:
-    #     text = input_file.read()
-     # window.title(f"Simple Text Editor - {filepath}")
     entry.config(state='normal')
     entry.delete(0, tk.END)
     entry.insert(0, filepath)
@@ -88,7 +82,6 @@ def open_file(keyName,entry):
         config.set('main', keyName, valueMap.get(keyName))
         with open(SYS_CONFIG_PATH, 'w') as f:
              config.write(f)
-             # print("Config Saved:" + keyName + "=" + valueMap.get(keyName))
              level = logging.INFO
              logger.log(level, "Config Saved:" + keyName + "=" + valueMap.get(keyName))
 
@@ -104,10 +97,6 @@ def open_dir(keyName,entry):
     filepath = tkFileDialog.asksaveasfilename(initialdir = "/",title = "Select file",defaultextension="apks",filetypes = (("apks files","*.apks"),("apks files","*.apks")))
     if not filepath:
         return 
-
-    # with open(filepath, "r") as input_file:
-    #     text = input_file.read()
-     # window.title(f"Simple Text Editor - {filepath}")
     entry.config(state='normal')
     entry.delete(0, tk.END)
     entry.insert(0, filepath)
@@ -140,35 +129,6 @@ def popen_and_call(on_success,on_fail, popen_args):
     # returns immediately after the thread starts
     return thread
 
-# def save_file():
-#     """Save the current file as a new file."""
-#     filepath = asksaveasfilename(
-#         defaultextension="txt",
-#         filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
-#     )
-#     if not filepath:
-#         return
-#     with open(filepath, "w") as output_file:
-#         text = txt_edit.get(1.0, tk.END)
-#         output_file.write(text)
-#      window.title(f"Simple Text Editor - {filepath}")
-
-#              ===========================================
-#              |                                         |
-#              |                                         |
-#              |                                         |
-#              |               fr_menus                         |
-#              |                                         |
-#              |                                         |
-#              |                                         |
-#              |                                         |
-#              ===========================================
-#              |                                         |
-#              |                                         |
-#              |               fr_console                |
-#              |                                         |
-#              |                                         |
-#              ===========================================
 
 class App:
 
@@ -184,23 +144,20 @@ class App:
         fr_menus = tk.Frame(root, relief=tk.RAISED, bd=2)
         # 输出区
         fr_console = tk.Frame(root, relief=tk.RAISED, bd=1)
+        self.console = ConsoleUi(fr_console)
      
-        # style = ttk.Style()
-
-        # style.theme_create( "yummy", parent="alt", settings={
-        #         "TNotebook": {"configure": {"tabmargins": [5, 10, 5, 5] } } } )
+ 
+        # 设置tab显示风格
         mygreen = "#d2ffd2"
         withte = "#ffffff"
 
         style = ttk.Style()
-
         style.theme_create( "yummy", parent="alt", settings={
             "TNotebook": {"configure": {"tabmargins": [2, 5, 2, 0] } },
             "TNotebook.Tab": {
             "configure": {"padding": [5, 1]},
             "map":       {"background": [("selected", withte)],
                           "expand": [("selected", [1, 1, 1, 0])] } } } )
-        
         style.theme_use("yummy")
 
         notebook = ttk.Notebook(fr_menus)
@@ -211,19 +168,8 @@ class App:
         notebook.grid(row=0, column=0,sticky="nsew")
         
         fr_menus.grid(row=0, column=0, sticky="ns" )
-        # fr_operate.grid(row=0, column=1, sticky="ns" )
         fr_console.grid(row=1, column=0, sticky="nsew")
-        
-        # create menu buttons
-        # btn_export = tk.Button(fr_menus, text="Export Apks")
-        # btn_setup = tk.Button(fr_menus, text="Setup BundleTool")
-        
-        # btn_export.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-        # btn_setup.grid(row=1, column=0, sticky="ew", padx=5)
-        
-        # layout message console
-        # msg_console = tk.Message(fr_console,text="Output messages here ... ",padx=5, pady=5, width=300)
-        # msg_console.grid(row=1, column=1, sticky="nsew")
+ 
 
         # setup aab file path:
         labelAabPath = tk.Label(tab1,text="AAB File Path: ")
@@ -234,7 +180,7 @@ class App:
         btnAabPath.grid(row=0, column=2,sticky="nw", padx=5, pady=20)
 
     
-        # setup key store file path:
+        # set key store file path:
         labelKeystorePath = tk.Label(tab1,text="Key Store Path: ")
         labelKeystorePath.grid(row=1, column=0,sticky="nw",padx=5, pady=5)
         self.entryKeystorePath = tk.Entry(tab1,width=40,state='disabled')
@@ -242,26 +188,26 @@ class App:
         btnKeystorePath = tk.Button(tab1,text="...",command=lambda:open_file(KEY_JKS,self.entryKeystorePath))
         btnKeystorePath.grid(row=1, column=2,sticky="nw", padx=5, pady=5)
 
-            # setup key store file path:
+        # set key store file path:
         labelKeystorePwd = tk.Label(tab1,text="Key Store Password: ")
         labelKeystorePwd.grid(row=2, column=0,sticky="nw",padx=5, pady=5)
         self.entryKeystorePwd = tk.Entry(tab1,width=40)
         self.entryKeystorePwd.grid(row=2, column=1,sticky="nw", padx=5, pady=5)
 
-         # setup key store file path:
+        # set key store file path:
         labelKeyAlias = tk.Label(tab1,text="Key Alias: ")
         labelKeyAlias.grid(row=3, column=0,sticky="nw",padx=5, pady=5)
         self.entryKeyAlias = tk.Entry(tab1,width=40)
         self.entryKeyAlias.grid(row=3, column=1,sticky="nw", padx=5, pady=5)
        
 
-         # setup key store file path:
+        # set key store file path:
         labelKeyPwd = tk.Label(tab1,text="Key Password: ")
         labelKeyPwd.grid(row=4, column=0,sticky="nw",padx=5, pady=5)
         self.entryKeyPwd = tk.Entry(tab1,width=40)
         self.entryKeyPwd.grid(row=4, column=1,sticky="nw", padx=5, pady=5)
 
-          # setup apks output path:
+        # set apks output path:
         labelExportPath = tk.Label(tab1,text="Export Path: ")
         labelExportPath.grid(row=5, column=0,sticky="nw",padx=5, pady=20)
         self.entryExportPath = tk.Entry(tab1,width=40)
@@ -269,6 +215,7 @@ class App:
         btnExportPath = tk.Button(tab1,text="...",command=lambda:open_dir(KEY_EXPORT_PATH,self.entryExportPath))
         btnExportPath.grid(row=5, column=2,sticky="nw", padx=5, pady=20)
 
+        # buttons container
         fr_btns = tk.Frame(tab1,width=580, height=50)
         fr_btns.grid(row=6, column=1, columnspan = 2, sticky="nw")
 
@@ -284,7 +231,7 @@ class App:
         btnApkSize = tk.Button(fr_btns,text="Apk Size",command=self.getApkSize)
         btnApkSize.grid(row=0, column=4,sticky="nw", padx=5, pady=5)
 
-        #tab2
+        #set tab2
         labelBundleToolPath = tk.Label(tab2,text="BundleTool Path: ")
         labelBundleToolPath.grid(row=0, column=0,sticky="nw",padx=5, pady=20)
         self.entryBundleToolPath = tk.Entry(tab2,width=40,state='disabled')
@@ -292,18 +239,20 @@ class App:
         btnBundleToolPath = tk.Button(tab2,text="...",command=lambda:open_file(KEY_BUNDLETOOL_PATH,self.entryBundleToolPath))
         btnBundleToolPath.grid(row=0, column=2,sticky="nw", padx=5, pady=20)
 
-        # labelADBPath = tk.Label(tab2,text="ADB Path: ")
-        # labelADBPath.grid(row=1, column=0,sticky="nw",padx=5, pady=20)
-        # self.entryADBPath = tk.Entry(tab2,width=40,state='disabled')
-        # self.entryADBPath.grid(row=1, column=1,sticky="nw", padx=5, pady=20)
-        # btnADBPath = tk.Button(tab2,text="...",command=lambda:open_file(KEY_ADB_PATH,self.entryADBPath))
-        # btnADBPath.grid(row=1, column=2,sticky="nw", padx=5, pady=20)
+        labelADBPath = tk.Label(tab2,text="ADB Path: ")
+        labelADBPath.grid(row=1, column=0,sticky="nw",padx=5, pady=20)
+        self.entryADBPath = tk.Entry(tab2,width=40,state='disabled')
+        self.entryADBPath.grid(row=1, column=1,sticky="nw", padx=5, pady=20)
+        btnADBPath = tk.Button(tab2,text="...",command=lambda:open_file(KEY_ADB_PATH,self.entryADBPath))
+        btnADBPath.grid(row=1, column=2,sticky="nw", padx=5, pady=20)
 
-        # copy default config file 
+
+
+        # ================> copy default config file <================
+        level = logging.INFO
         configPathDir = "/Users/" + SYS_USER  + "/.AndroidBundleTool"
         if not os.path.exists(configPathDir):
             os.makedirs(configPathDir)
-            level = logging.INFO
             logger.log(level, "Create config Path:" + configPathDir)
         global SYS_CONFIG_PATH
         SYS_CONFIG_PATH = configPathDir + "/config.ini"
@@ -317,29 +266,29 @@ class App:
         config.read(SYS_CONFIG_PATH)
         bundletoolpath = config.get('main', KEY_BUNDLETOOL_PATH)
         print('bundletoolpath:' + bundletoolpath)
-        if 'NULL'!= bundletoolpath:
+        if 'NULL'!= bundletoolpath and os.path.exists(bundletoolpath):
             self.entryBundleToolPath.config(state='normal')
             self.entryBundleToolPath.delete(0, tk.END)
             self.entryBundleToolPath.insert(0, bundletoolpath)
             self.entryBundleToolPath.config(state='disabled')
             valueMap[KEY_BUNDLETOOL_PATH] = dealWithSpace(bundletoolpath)
 
+        #read adb config
         adbpath = config.get('main', KEY_ADB_PATH)
-        print("adbpath: " + adbpath)
-        # if 'NULL'!= adbpath:
-            # self.entryADBPath.config(state='normal')
-            # self.entryADBPath.delete(0, tk.END)
-            # self.entryADBPath.insert(0, adbpath)
-            # self.entryADBPath.config(state='disabled')
-            # valueMap[KEY_ADB_PATH] = dealWithSpace(adbpath)
+        logger.log(level, "config adbpath: " + adbpath)
         if 'NULL' == adbpath:
+            # auto check wether the adb file existed in the android sdk path
             adbpath = "/Users/" + SYS_USER  + "/Library/Android/sdk/platform-tools/adb"
-        valueMap[KEY_ADB_PATH] = dealWithSpace(adbpath)
+        
+        logger.log(level, "real adbpath: " + adbpath)
+        if os.path.exists(adbpath):
+            logger.log(level, "adbpath checked: adb file existed!")
+            self.entryADBPath.config(state='normal')
+            self.entryADBPath.delete(0, tk.END)
+            self.entryADBPath.insert(0, adbpath)
+            self.entryADBPath.config(state='disabled')
+            valueMap[KEY_ADB_PATH] = dealWithSpace(adbpath)
 
-      
-        self.console = ConsoleUi(fr_console)
-        # self.clock = Clock()
-        # self.clock.start()
         self.root.protocol('WM_DELETE_WINDOW', self.quit)
         self.root.bind('<Control-q>', self.quit)
         signal.signal(signal.SIGINT, self.quit)
@@ -401,37 +350,11 @@ class App:
 
         if not self.verifyParams():
             return
-        # try:
-        #     cmdExport = 'java -jar /Users/tangjinlong/WorkSDKs/android_bundletool/bundletool-all-0.11.0.jar build-apks --bundle=' + valueMap.get(KEY_AAB) \
-        #                 +' --output=' + valueMap.get(KEY_EXPORT_PATH) + ' --ks='+ valueMap.get(KEY_JKS) + ' --ks-pass=pass:' + valueMap.get(KEY_STORE_PWD) \
-        #                 + ' --ks-key-alias=' + valueMap.get(KEY_ALIAS) + ' --key-pass=pass:' + valueMap.get(KEY_ALIAS_PWD)
-        #     print('cmdExport = ' + cmdExport)
-        #     # os.system(cmdExport)
-        #     # op = subprocess.Popen(cmdExport, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,close_fds=True)
-        
-        #     # error = op.stderr.read()
-        #     # if error != '':
-        #     #     level = logging.ERROR
-        #     #     logger.log(level, error)
-        #     def callback():
-        #         level = logging.INFO
-        #         logger.log(level, "finished")
-        #     popen_and_call(lambda:callback(),cmdExport, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,close_fds=True)
-    
-        # except Exception as e:
-        #     level = logging.ERROR
-        #     logger.log(level, sys.exc_info()[0])
+       
         try:
             cmdExport = 'java -jar ' + valueMap.get(KEY_BUNDLETOOL_PATH) + ' build-apks --bundle=' + valueMap.get(KEY_AAB) +' --output=' + valueMap.get(KEY_EXPORT_PATH) + ' --ks='+ valueMap.get(KEY_JKS) + ' --ks-pass=pass:' + valueMap.get(KEY_STORE_PWD) + ' --ks-key-alias=' + valueMap.get(KEY_ALIAS) + ' --key-pass=pass:' + valueMap.get(KEY_ALIAS_PWD)
             print('cmdExport = ' + cmdExport)
     
-            # os.system(cmdExport)
-            # op = subprocess.Popen(cmdExport, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,close_fds=True)
-        
-            # error = op.stderr.read()
-            # if error != '':
-            #     level = logging.ERROR
-            #     logger.log(level, error)
             def exportSuccess():
                 global bDoingJob
                 level = logging.INFO
@@ -666,34 +589,6 @@ class ConsoleUi:
             else:
                 self.display(record)
         self.frame.after(100, self.poll_log_queue)
-
-
-class Clock(threading.Thread):
-    """Class to display the time every seconds
-    Every 5 seconds, the time is displayed using the logging.ERROR level
-    to show that different colors are associated to the log levels
-    """
-
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self._stop_event = threading.Event()
-
-    def run(self):
-        logger.debug('Clock started')
-        previous = -1
-        while not self._stop_event.is_set():
-            now = datetime.datetime.now()
-            if previous != now.second:
-                previous = now.second
-                # if now.second % 5 == 0:
-                #     level = logging.ERROR
-                # else:
-                level = logging.INFO
-                logger.log(level, now)
-            time.sleep(0.2)
-
-    def stop(self):
-        self._stop_event.set()
 
 def main():   
     logging.basicConfig(level=logging.DEBUG)
