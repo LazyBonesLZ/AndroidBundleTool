@@ -35,7 +35,7 @@
 ## TroubleShot
 This is an application based on python 2.7, UI is implemented by Tkinter. I am new to python, so it may not work properly on your mac. If so, it may be because your version does not match. You can modify the source code to be compatible with other versions of the Python interface.
 
-`Platypus` is a script packaging tool. If you complete a new version of the script, you can use this tool to package it into a Mac app. But when packing, you need to pay attention to the following: 
+[`Platypus`](https://sveinbjorn.org/files/manpages/PlatypusDocumentation.html) is a script packaging tool. If you complete a new version of the script, you can use this tool to package it into a Mac app. But when packing, you need to pay attention to the following: 
 
 * Script Type : `Python`
 * Select your script
