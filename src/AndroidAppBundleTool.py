@@ -429,7 +429,7 @@ class App:
             if androidVersion != '':
                 level = logging.INFO
                 logger.log(level, '当前设备：Android version = ' + androidVersion)
-                if int(androidVersion) < 19:
+                if int(androidVersion) < 21:
                     cmdInstall += ' --allow-downgrade'
             print('cmdInstall = ' + cmdInstall)
             # logger.log(level, 'cmdInstall = ' + cmdInstall)
